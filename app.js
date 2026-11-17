@@ -81,6 +81,6 @@ $('#staffBtn').onclick=()=>{st.staff=!st.staff;try{localStorage.setItem('staff',
 window.addEventListener('hashchange',route);
 function start(d){st.data=d;route()}
 if(window.__DATA__)start(window.__DATA__);
-else fetch('data.json',{cache:'no-cache'}).then(r=>r.json()).then(start).catch(()=>{$('#app').innerHTML='<p class="empty">Unable to load data. Please check your connection.</p>'});
+else Promise.all([fetch('data.json',{cache:'no-cache'}).then(r=>r.json()),fetch('approved.json',{cache:'no-cache'}).then(r=>r.json()).catch(()=>({approved:[]}))]).then(([d,a])=>{const ok=(a.approved||[]).map(x=>String(x).toLowerCase());d.drugs.forEach(x=>{x.status=ok.includes(x.id)?'approved':'draft'});start(d)}).catch(()=>{$('#app').innerHTML='<p class="empty">Unable to load data. Please check your connection.</p>'});
 if('serviceWorker' in navigator&&!window.__PREVIEW__&&location.protocol!=='file:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
