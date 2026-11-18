@@ -63,7 +63,7 @@ function drug(id){
   const l=st.lang;
   const staff=st.staff?'<div class="staff"><dl><dt>'+t('schedule')+'</dt><dd>'+esc(d.schedule[l])+'</dd><dt>'+t('food')+'</dt><dd>'+esc(d.food[l])+'</dd><dt>'+t('flag')+'</dt><dd><b>'+esc(d.flag[l])+'</b></dd><dt>'+t('form')+'</dt><dd>'+esc(d.form[l])+'</dd></dl></div>':'';
   $('#app').innerHTML='<a class="back" href="#/">'+t('back')+'</a>'+
-   '<h1>'+esc(d.name[l])+'</h1><p class="lead">'+(l==='ar'?'<bdi>'+esc(d.name.en)+'</bdi> · ':'')+'<bdi>'+esc(d.brand)+'</bdi><br>'+esc(d.drug_class[l])+'</p>'+badge(d)+staff+
+   '<h1>'+esc(d.name[l])+'</h1><p class="lead">'+(l==='ar'?'<bdi>'+esc(d.name.en)+'</bdi> · ':'')+'<bdi>'+esc(d.brand)+'</bdi><br>'+esc(d.drug_class[l])+'</p>'+badge(d)+(l==='ar'&&d.ar_pending?'<div class="note">الترجمة العربية لهذا الدواء قيد الإعداد، والمعلومات معروضة حاليًا بالإنجليزية.</div>':'')+staff+
    '<div class="card"><h2>'+t('used')+'</h2><p>'+esc(d.used_for[l])+'</p></div>'+
    '<div class="card"><h2>'+t('how')+'</h2>'+(st.staff?'':'<p><b>'+esc(d.schedule[l])+'</b><br>'+esc(d.food[l])+'</p>')+ul(d.how_to_take[l])+'<p><b>'+t('missed')+':</b> '+esc(d.missed_dose[l])+'</p></div>'+
    '<div class="card"><h2>'+t('common')+'</h2><p class="lead">'+t('commonNote')+'</p>'+ul(d.common[l])+'</div>'+
@@ -72,7 +72,7 @@ function drug(id){
    '<details class="card"><summary>'+t('inter')+'</summary>'+ul(d.interactions[l])+'</details>'+
    '<details class="card"><summary>'+t('monitor')+'</summary>'+ul(d.monitoring[l])+'</details>'+
    '<details class="card"><summary>'+t('store')+'</summary>'+ul(d.storage[l])+'</details>'+
-   (window.__PREVIEW__?'':'<a class="btn" href="'+esc(d.pdf)+'" target="_blank" rel="noopener">'+t('pdf')+'</a>');
+   (window.__PREVIEW__||!d.pdf?'':'<a class="btn" href="'+esc(d.pdf)+'" target="_blank" rel="noopener">'+t('pdf')+'</a>');
   window.scrollTo(0,0);
 }
 function route(){const m=location.hash.match(/^#\/drug\/([\w-]+)/);m?drug(m[1]):home();chrome()}
